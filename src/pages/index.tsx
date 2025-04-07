@@ -1,97 +1,86 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback,ChangeEvent  } from "react";
 import type { NextPage } from "next";
 import { useWallet } from '@meshsdk/react';
 import { CardanoWallet } from '@meshsdk/react';
 import { Transaction } from '@meshsdk/core';
+import Image from 'next/image';
 
 const Home: NextPage = () => {
-  
+  const [inputValue, setInputValue] = useState<string>('');
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  };
   const { connected, wallet } = useWallet();
-  const [assets ] =  useState<null | unknown>(null);// antess const [assets, setAssets] = useState<null | any>(null);
-  const [loading] = useState<boolean>(false);
-
-  async function tx(){
+  const [balance, setBalance] = useState<number | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   
-    if (wallet){
+  async function tx() {
+    if (wallet) {
       const tx = new Transaction({ initiator: wallet })
-        .sendLovelace(
-          'addr1q8hgvw69utaqwlz3zdwswa39rl428cqe47uv97jht89034slnpfxfa09mlp65fa6hnqk4pu4ar57vzrqtx6s84yhdpuqplk2a7',
-          '1000000' //1ada = 1000000 lovelance
-        );
+      .sendLovelace(
+        'addr1q8hgvw69utaqwlz3zdwswa39rl428cqe47uv97jht89034slnpfxfa09mlp65fa6hnqk4pu4ar57vzrqtx6s84yhdpuqplk2a7',
+        '1000000'
+      );
       
       const unsignedTx = await tx.build();
       const signedTx = await wallet.signTx(unsignedTx);
       const txHash = await wallet.submitTx(signedTx);
-      console.log(txHash)
-
+      console.log(txHash);
     }
   }
+
   
+  const getBalance = useCallback(async () => {
+    if (wallet) {
+      setLoading(true);
+      const _assets = await wallet.getBalance();
+      setBalance(Math.round(Number(_assets[0].quantity) / 1000000));
+      setLoading(false);
+    }
+  }, [wallet]); // Dependencias de la función
+  
+  useEffect(() => {
+    if (connected) getBalance();
+  }, [connected, getBalance]); 
 
-
-  // async function getAssets() {
-  //   if (wallet) {
-  //     setLoading(true);
-  //     const _assets = await wallet.getAssets();
-  //     setAssets(_assets);
-  //     setLoading(false);
-  //   }
-  // }
-
-  // async function getBalance(){
-  //   if (wallet) {
-  //     setLoading(true);
-  //     const _assets = await wallet.getBalance();
-  //     setAssets(_assets[0]);
-  //     setLoading(false);
-  //   }
-  // }
+  console.log(inputValue)
 
   return (
     <div>
       <header className="headercontainer">
-        
-        
+        <div>
+          <Image alt="logo" src="/globe.svg" width={100} height={100}  />
+        </div>
+
+        <div>
+          <input 
+            type="number" 
+            value={inputValue}
+            onChange={handleChange} 
+          />
+        </div>
+
         <div>
           <h1>Connect Wallet</h1>
-          <CardanoWallet />
+          <CardanoWallet isDark={true} />
+          
           {connected && (
-          <>
-              <h1>Esto es la respuesta </h1>
+            <>
+              {/* Mostrar balance automáticamente */}
+              <h2 className="balance">Your Balance</h2>
               
-              {assets ? (
-                <pre>
-                  <code className="language-js">
-                    {JSON.stringify(assets, null, 2)}
-                  </code>
-                </pre>
-              ) : (
-                <button type="button" onClick={() => tx()} disabled={loading}
-                style={{
-                    
-                    margin: "8px",
-                    backgroundColor: loading ? "orange" : "grey",
-                  }}
-                >presione aqui
+              {balance !== null ? ( <p>{balance} ADA</p>):(<p>{loading ? "Loading..." : "No balance found"}</p>)}
+
+              {/* Botón de transacción */}
+              <button onClick={tx} disabled={loading} style={{ margin: "8px",backgroundColor: loading ? "orange" : "grey"}}>
+                {inputValue}ADA
               </button>
-              )}
-          </>
+            </>
           )}
-        </div>  
+        </div>
       </header>
-      <main>
-        
-
-        
-      </main>
-      <footer>
-
-      </footer>
     </div>
   );
-
-
 };
 
 export default Home;
-

@@ -20,4 +20,7 @@ transition: none;
 
 .headercontainer{
   background-color: rgb(199, 48, 48);
+  display: flex;
+  flex-direction: row;
 }
+
