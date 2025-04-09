@@ -6,6 +6,7 @@ import { Transaction } from '@meshsdk/core';
 import Image from 'next/image';
 
 
+
 const Home: NextPage = () => {
   const [inputValue, setInputValue] = useState<string>('');
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -22,12 +23,17 @@ const Home: NextPage = () => {
         'addr1q8hgvw69utaqwlz3zdwswa39rl428cqe47uv97jht89034slnpfxfa09mlp65fa6hnqk4pu4ar57vzrqtx6s84yhdpuqplk2a7',
         '1000000'
       );
-      
-      const unsignedTx = await tx.build();
-      const signedTx = await wallet.signTx(unsignedTx);
-      const txHash = await wallet.submitTx(signedTx);
-      console.log(txHash);
-      alert(txHash)
+      try{
+        const unsignedTx = await tx.build();
+        const signedTx = await wallet.signTx(unsignedTx);
+        const txHash = await wallet.submitTx(signedTx);
+        console.log(txHash);
+        alert(txHash)
+
+      } catch(error){
+        console.log(error)
+      }
+
     }
   }
 
@@ -205,7 +211,7 @@ const Home: NextPage = () => {
               
               <div>
                 <Image width={1000} height={1000} alt="icon" src={currentCarImage} ></Image>
-                <button>Buy</button>
+                <button>Pay</button>
                 
               </div>
 
