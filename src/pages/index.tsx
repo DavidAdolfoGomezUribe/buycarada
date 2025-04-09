@@ -5,6 +5,7 @@ import { CardanoWallet } from '@meshsdk/react';
 import { Transaction } from '@meshsdk/core';
 import Image from 'next/image';
 
+
 const Home: NextPage = () => {
   const [inputValue, setInputValue] = useState<string>('');
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -26,6 +27,7 @@ const Home: NextPage = () => {
       const signedTx = await wallet.signTx(unsignedTx);
       const txHash = await wallet.submitTx(signedTx);
       console.log(txHash);
+      alert(txHash)
     }
   }
 
@@ -43,24 +45,43 @@ const Home: NextPage = () => {
     if (connected) getBalance();
   }, [connected, getBalance]); 
 
+  
+  // Nuevo estado para las imágenes
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const imagePaths = [
+    '/carone.png',
+    '/cartwo.png',
+    '/carthree.png'
+  ];
+
+
+
+  // Handler para cambiar imagen (nuevo)
+  const handleImageClick = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % imagePaths.length);
+  };
+  
+
+
   console.log(inputValue)
 
   return (
     <div>
       <header className="headercontainer">
         <div>
-          <Image alt="logo" src="/globe.svg" width={100} height={100}  />
+          <Image alt="logo" src="/buycarlogo.png" width={500} height={400} className="logo" />
+         
+          <div>
+            <p>Home page</p>
+            <p>Car collection</p>
+            <p>Car Reviews</p>
+            <p>Car News</p>
+          </div>
+          
         </div>
 
-        <div>
-          <input 
-            type="number" 
-            value={inputValue}
-            onChange={handleChange} 
-          />
-        </div>
-
-        <div>
+   
+        <div> {/* Componente de la billetera de cardano  */}
           <h1>Connect Wallet</h1>
           <CardanoWallet isDark={true} />
           
@@ -79,6 +100,86 @@ const Home: NextPage = () => {
           )}
         </div>
       </header>
+
+      {/*carro de fondo en position absolute y z-index: -1 */}
+      <div className="backgroundcontainer">
+        <Image className="imagebackground" src="/backgroundmaindiv.png" alt="background" width={1000} height={700}></Image>
+      </div>
+
+      <main className="maincontainer">
+        
+        <section>
+          <article>
+            <h1>Your Dream Car is Waiting Here</h1>
+            <p>Choice of quality cars, affordable prices and the best service are only here</p>
+            <div>
+              <button>Contact us</button>
+              <button>Furthermore</button>
+            </div>
+
+          </article>
+            
+          <article onClick={handleImageClick}>
+            <Image alt="car1" src={imagePaths[currentImageIndex]} width={1000} height={100} ></Image>
+              
+          </article>
+
+        </section>
+
+        <section>
+
+          <article>
+
+            <p>Why buy a car at BuyCar?</p>
+
+            
+            <div>
+              <div>
+                <Image width={100} height={100} alt="icon" src="/discount.png" ></Image>
+                <p>A wide selection of quality cars at affordable prices</p>
+              </div>
+              
+              <div>
+                <Image width={100} height={100} alt="icon" src="/heart.png" ></Image>
+                <p>Expert assistance in choosing a car that suits your needs and budget.</p>
+              </div>
+              
+              <div>
+                <Image width={100} height={100} alt="icon" src="/smile.png" ></Image>
+                <p>Membeli mobil mudah, menyenangkan dan memuaskan</p>
+              </div>
+            
+            
+            </div>
+          </article>
+
+          
+        </section>
+        
+        <section>
+          <article>
+            <div>menu</div>
+            <div>aqui va una imagen</div>
+          </article>
+        </section>
+        
+        
+        <div>
+          <input 
+            type="number" 
+            value={inputValue}
+            onChange={handleChange} 
+          />
+        </div>
+
+
+
+      </main>
+
+
+
+
+
     </div>
   );
 };
