@@ -62,6 +62,25 @@ const Home: NextPage = () => {
   };
   
 
+  const [currentCarImage,setCurrentCarImage]= useState<string>("/Toyota.png")
+
+  // notacion de tipescrtip , asi se declara un objeto en typescript declarando , en este ejemplo , que ambos son de tipo string
+  //[key,value]
+  const handleCarClick = (carName:string) => {
+    const images: Record<string, string> = {
+      'Toyota Corolla Cross Hybrid GR Sport': '/Toyota.png',
+      'Suzuki Grand Vitara': '/SuzukiGV.png',
+      'Suzuki S-Presso': '/SuzukiSP.png',
+      'Subaru WRX': '/SubaruWRX.png',
+      'Chery Omoda 5': '/CheryOmoda5.png'
+
+    };
+
+    setCurrentCarImage(images[carName]);
+  
+  };
+
+
 
   console.log(inputValue)
 
@@ -82,19 +101,19 @@ const Home: NextPage = () => {
 
    
         <div> {/* Componente de la billetera de cardano  */}
-          <h1>Connect Wallet</h1>
+          
           <CardanoWallet isDark={true} />
           
           {connected && (
             <>
               {/* Mostrar balance automáticamente */}
-              <h2 className="balance">Your Balance</h2>
+              <h2 className="balance">Balance: </h2>
               
               {balance !== null ? ( <p>{balance} ADA</p>):(<p>{loading ? "Loading..." : "No balance found"}</p>)}
 
               {/* Botón de transacción */}
-              <button onClick={tx} disabled={loading} style={{ margin: "8px",backgroundColor: loading ? "orange" : "grey"}}>
-                {inputValue}ADA
+              <button onClick={tx} disabled={loading} className="buybutton">
+                {inputValue}Buy
               </button>
             </>
           )}
@@ -158,9 +177,45 @@ const Home: NextPage = () => {
         
         <section>
           <article>
-            <div>menu</div>
-            <div>aqui va una imagen</div>
+
+            <div>
+              <p>Latest car</p>
+              <p>View Car Collection {'>'}</p>
+            </div>
+          
+          
+            <div>
+              <div>
+                <p onClick={() => handleCarClick('Toyota Corolla Cross Hybrid GR Sport')}>
+                  Toyota Corolla Cross Hybrid GR Sport
+                </p>
+                <p onClick={() => handleCarClick('Suzuki Grand Vitara')}>
+                  Suzuki Grand Vitara
+                </p>
+                <p onClick={() => handleCarClick('Suzuki S-Presso')}>
+                  Suzuki S-Presso
+                </p>
+                <p onClick={() => handleCarClick('Subaru WRX')}>
+                  Subaru WRX
+                </p>
+                <p onClick={() => handleCarClick('Chery Omoda 5')}>
+                  Chery Omoda 5
+                </p>
+              </div>
+              
+              <div>
+                <Image width={1000} height={1000} alt="icon" src={currentCarImage} ></Image>
+                <button>Buy</button>
+                
+              </div>
+
+            </div>
+          
           </article>
+        </section>
+
+        <section>
+          hla
         </section>
         
         
@@ -177,7 +232,7 @@ const Home: NextPage = () => {
       </main>
 
 
-
+          
 
 
     </div>
