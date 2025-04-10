@@ -16,6 +16,15 @@ const Home: NextPage = () => {
   const [balance, setBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   
+  const [currentCar,setCurrentCar ] = useState({
+    name: 'Toyota Corolla Cross Hybrid GR Sport',
+    image: '/Toyota.png',
+    price: '0.10' // Precio base para Toyota
+  });
+
+  const [amount,setAmount] = useState(1);
+
+
   async function tx() {
     if (wallet) {
       const tx = new Transaction({ initiator: wallet })
@@ -70,21 +79,63 @@ const Home: NextPage = () => {
 
   const [currentCarImage,setCurrentCarImage]= useState<string>("/Toyota.png")
 
+
+  
   // notacion de tipescrtip , asi se declara un objeto en typescript declarando , en este ejemplo , que ambos son de tipo string
   //[key,value]
+
+
+  const carPrices : Record<string, string> =  {
+    'Toyota Corolla Cross Hybrid GR Sport': '0.10',
+    'Suzuki Grand Vitara': '0.11',
+    'Suzuki S-Presso': '0.12',
+    'Subaru WRX': '0.13',
+    'Chery Omoda 5': '0.14'
+
+  }
+
+
   const handleCarClick = (carName:string) => {
+
     const images: Record<string, string> = {
       'Toyota Corolla Cross Hybrid GR Sport': '/Toyota.png',
       'Suzuki Grand Vitara': '/SuzukiGV.png',
       'Suzuki S-Presso': '/SuzukiSP.png',
       'Subaru WRX': '/SubaruWRX.png',
       'Chery Omoda 5': '/CheryOmoda5.png'
-
     };
+
+    setCurrentCar({
+      name: carName,
+      image: images[carName],
+      price: carPrices[carName]
+    });
+    setAmount(1); 
+
 
     setCurrentCarImage(images[carName]);
   
   };
+
+  const incrementAmount = () => setAmount(prev => prev + 1);
+  const decrementAmount = () => setAmount(prev => (prev > 1 ? prev - 1 : 1));
+
+  const saveToLocalStorage = () => {
+    const carData = {
+      name: currentCar.name,
+      amount: amount.toString(),
+      price: currentCar.price
+    };
+  
+    // Sobrescribe directamente con el nuevo registro
+    localStorage.setItem('carPurchases', JSON.stringify(carData));
+    
+    console.log('Datos guardados (sobrescritos):', carData);
+  };
+
+
+
+
 
 
 
@@ -195,7 +246,7 @@ const Home: NextPage = () => {
                 <p onClick={() => handleCarClick('Toyota Corolla Cross Hybrid GR Sport')}>
                   Toyota Corolla Cross Hybrid GR Sport
                 </p>
-                <p onClick={() => handleCarClick('Suzuki Grand Vitara')}>
+                <p onClick={() => handleCarClick('Suzuki Grand Vitara') }>
                   Suzuki Grand Vitara
                 </p>
                 <p onClick={() => handleCarClick('Suzuki S-Presso')}>
@@ -211,7 +262,19 @@ const Home: NextPage = () => {
               
               <div>
                 <Image width={1000} height={1000} alt="icon" src={currentCarImage} ></Image>
-                <button>Pay</button>
+                
+                <div>
+                  <h2>amount</h2>
+                  
+                  <div>
+                    <p onClick={decrementAmount} >-</p>
+                    <p>{amount}</p>
+                    <p  onClick={incrementAmount}>+</p>
+                  </div>
+
+                  <button  onClick={saveToLocalStorage} >add</button>
+                  
+                </div>
                 
               </div>
 
