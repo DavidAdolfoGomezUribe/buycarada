@@ -1,10 +1,10 @@
-import { useState, useEffect, useCallback  } from "react";
+import { useState, useEffect, useCallback } from "react";
 import type { NextPage } from "next";
 import { useWallet } from '@meshsdk/react';
 import { CardanoWallet } from '@meshsdk/react';
 import { Transaction } from '@meshsdk/core';
 import Image from 'next/image';
-
+import AutoScrollGallery from "./components/AutoScrollGallery";
 const Home: NextPage = () => {
 
   const { connected, wallet } = useWallet();
@@ -124,6 +124,7 @@ const Home: NextPage = () => {
   
   
   
+  
 
 
   // Handler para cambiar imagen (nuevo)
@@ -184,12 +185,12 @@ const Home: NextPage = () => {
   
     // Sobrescribe directamente con el nuevo registro
     localStorage.setItem('carPurchases', JSON.stringify(carData));
-    alert('Datos guardados (sobrescritos):'+JSON.stringify(Object.values(carData),null,4));
+    alert('Datos guardados con exito :'+JSON.stringify(Object.values(carData),null,4));
     console.log('Datos guardados (sobrescritos):', carData);
   };
 
   
-  
+    
   
 
   return (
@@ -325,7 +326,7 @@ const Home: NextPage = () => {
                     <p  onClick={incrementAmount}>+</p>
                   </div>
 
-                  <button  onClick={saveToLocalStorage} >add</button>
+                  <button  onClick={saveToLocalStorage} >Add</button>
                   
                 </div>
                 
@@ -336,10 +337,9 @@ const Home: NextPage = () => {
           </article>
         </section>
 
-        <section>
-          hla
+        <section className="gallery-section">
+          <AutoScrollGallery />
         </section>
-        
         
       
 

@@ -1,6 +1,15 @@
 @import "tailwindcss";
 
-*{margin: 0; padding: 0; 
+@font-face {
+  font-family: 'Poppins-Light.ttf';
+  src: url('/fonts/Poppins-Light.ttf');
+}
+
+
+
+*{
+  font-family: 'Poppins-Light.ttf';
+  margin: 0; padding: 0; 
   /* outline: 1px solid tomato; */
 }
 *::before, *::after{box-sizing: border-box;}
@@ -26,6 +35,7 @@ transition: none;
 html{
   scrollbar-width: thin;
   scroll-behavior: smooth;
+  
 }
 
 .headercontainer{
@@ -62,7 +72,7 @@ html{
         white-space: nowrap;
         color: white; 
         text-align: center;
-        padding: 0.2vw 0.9vw;
+        padding: 1.8vw 1vw;
         display: flex;
         align-items: center;
         height: 100%;
@@ -100,9 +110,12 @@ html{
     
     right: 2.5vw;
     top: 0;
-
+    
     div{
+
       button{
+          
+        width: 12vw;
         font-size: 1.2vw;
         height: 4vw;
         
@@ -286,6 +299,7 @@ html{
 
 >section:nth-child(3){
   position: absolute;
+  background-color: white;
   
   width: 100%;
   height: 41.87vw;
@@ -338,6 +352,7 @@ html{
         justify-content: space-between;
 
         p{
+          padding-left: 1.3vw;
           transition: all 0.24s ease-in-out;
           display: flex;
           align-items: center;
@@ -346,6 +361,7 @@ html{
         }
 
         >p:hover{
+          scale: 1.05;
           cursor: pointer;
           background-color:rgba(0, 114, 237, 1) ;
           border-radius: 0.25vw;
@@ -364,18 +380,19 @@ html{
           display: flex;
           flex-direction: column;
           align-items: center;
+          
           background-color: rgba(63, 63, 63, 0.50);
           position: absolute;
           right: 0;
           bottom: 0;
-          width: 25vw;
-          height: 13vw;
+          width: 12vw;
+          height: 11.5vw;
           border-radius: 1vw;
           color: rgb(255, 255, 255);
 
           
           h2{
-            
+            font-size: 1.22vw;
             width: 100%;
             border-radius: 1vw;
             background-color: rgba(63, 63, 63, 0.50);
@@ -387,27 +404,29 @@ html{
             width: 100%;
             display: flex;
             flex-direction: row;
-            justify-content: space-evenly;
+            justify-content: center;
             align-items: center;
             
             p{
               transition: all 0.24s ease-in-out;
               margin: 0.25vw;
-              padding: 1vw 2vw;
+              padding: 0.5vw 1.2vw;
+              font-size: 1.11vw; 
             }
             
             p:nth-child(2){
-              font-size: 2vw; 
+              font-size: 1.5vw; 
             }
 
             p:nth-child(1):hover{
               border-radius: 1vw;
-              background-color: rgba(63, 63, 63, 0.50);
+              background-color: rgba(163, 62, 62, 0.712);
               cursor: pointer;
+              
             }
 
             p:nth-child(3):hover{
-              background-color: rgba(63, 63, 63, 0.50);
+              background-color: rgba(53, 172, 17, 0.486);
               cursor: pointer;
               border-radius: 1vw;
             }
@@ -417,14 +436,16 @@ html{
           button{
             transition: all 0.24s ease-in-out;
             width: 80%;
+            height: 3.5vw;
             display: flex;
             justify-content: center;
-            font-size: 2.22vw;
+            align-items: center;
+            font-size: 1.22vw;
           }
 
           button:hover{
             border-radius: 1vw;
-            background-color: rebeccapurple;
+            background-color: rgba(63, 63, 63, 0.50);
           }
         
         }
@@ -441,7 +462,10 @@ html{
   top: 112.98vw;
   width: 100%;
   height: 8.33vw;
-  background-color: #252525;
+  background-color: #ffffff;
+  /* >article{
+
+  } */
 }
 
 
