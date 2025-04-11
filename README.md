@@ -96,12 +96,10 @@ Cada billetera cuenta con una direccion unica de transferencia.
 
 - El proceso se reinicia y permite realizar una nueva transaccion
 
+- Para poder obtener los resultados guardados en el backend es necesario usar [Postman](https://www.postman.com/) y apuntar con el metodo GET  a
+"https://67f854922466325443ec6b72.mockapi.io/bills"
 
-
-
-
-
-
+- Para verificar la veracidad de la transaccion se puede introducir el txHash en la barra de busqueda de [Cardanoscan](https://cardanoscan.io/) 
 
 
 ## Next.js README.md
