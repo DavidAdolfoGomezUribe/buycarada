@@ -30,7 +30,7 @@ const AutoScrollGallery = () => {
 
     let animationId: number;
     let position = 0;
-    const speed = 1; // Ajusta la velocidad
+    const speed = 0.85; // Ajusta la velocidad
 
     const animate = () => {
       position -= speed;

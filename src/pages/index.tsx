@@ -341,7 +341,71 @@ const Home: NextPage = () => {
           <AutoScrollGallery />
         </section>
         
-      
+        <section>
+
+          <article>
+            <h1>What do customers say?</h1>
+            
+            <div> 
+            
+              <div>
+                <div>
+                  <p>
+                  I am very satisfied with BuyCar service. Their team of experts helped me choose a car that fits my needs and budget. The car I bought is also of good quality. Thank you BuyCar!
+                  </p>
+                  <h2>Wulan Sari</h2>
+                </div>
+                
+                <div>
+                  <p>I am very happy with the car I bought from BuyCar. The car is in very good condition and the price is very affordable. I will definitely recommend BuyCar to my friends.</p>
+                  <h2>Cahyono</h2>
+                </div>
+                
+              </div>
+              
+
+              <div>
+                <div>
+                  <p>
+                  I never thought about buying a car online before, but BuyCar has proven that the online car buying experience can be very easy and enjoyable. I am very happy with the car I bought and the service provided by the BuyCar team.
+                  </p>
+                  <h2>Agus Santoso</h2>
+                </div>
+                
+                <div>
+                  <p>I bought a car from BuyCar and I am very happy with my buying experience. The car I bought was in very good condition and the price was very affordable. Thank you BuyCar!</p>
+                  <h2>Iwan Pranata</h2>
+                </div>
+                
+                
+              </div>
+              
+              <div>
+                <div>
+                  <p>
+                  BuyCar provided excellent service. They were very responsive and helped me through every step of the purchase. I felt very safe and comfortable transacting with them.
+                  </p>
+                  <h2>Sri Hartini</h2>
+                </div>
+                
+                <div>
+                  <p>
+                  I am very happy with my car buying experience from BuyCar. They provide a good selection of quality and affordable cars, and excellent service. I highly recommend BuyCar to anyone looking to buy a car.
+                  </p>
+                  <h2>Ahmad Faris</h2>
+                </div>
+                
+                
+              </div>
+
+
+            </div>
+            
+
+          </article>
+          
+        </section>
+        
 
 
 
