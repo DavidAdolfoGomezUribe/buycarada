@@ -1,48 +1,109 @@
-import { useState, useEffect, useCallback,ChangeEvent  } from "react";
+import { useState, useEffect, useCallback  } from "react";
 import type { NextPage } from "next";
 import { useWallet } from '@meshsdk/react';
 import { CardanoWallet } from '@meshsdk/react';
 import { Transaction } from '@meshsdk/core';
 import Image from 'next/image';
 
-
-
 const Home: NextPage = () => {
-  const [inputValue, setInputValue] = useState<string>('');
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
-  };
+
   const { connected, wallet } = useWallet();
   const [balance, setBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [amount,setAmount] = useState(1);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   
   const [currentCar,setCurrentCar ] = useState({
     name: 'Toyota Corolla Cross Hybrid GR Sport',
     image: '/Toyota.png',
     price: '0.10' // Precio base para Toyota
   });
+  
+  const imagePaths = [
+    '/carone.png',
+    '/cartwo.png',
+    '/carthree.png'
+  ];
 
-  const [amount,setAmount] = useState(1);
-
+  async function postFacture(txHash: string) {
+    const carData = JSON.parse(localStorage.getItem('carPurchases') || '{}');
+    const response = await fetch('https://67f854922466325443ec6b72.mockapi.io/bills', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...carData, txHash }),
+    });
+    return await response.json();
+  }
 
   async function tx() {
-    if (wallet) {
-      const tx = new Transaction({ initiator: wallet })
-      .sendLovelace(
-        'addr1q8hgvw69utaqwlz3zdwswa39rl428cqe47uv97jht89034slnpfxfa09mlp65fa6hnqk4pu4ar57vzrqtx6s84yhdpuqplk2a7',
-        '1000000'
-      );
-      try{
-        const unsignedTx = await tx.build();
-        const signedTx = await wallet.signTx(unsignedTx);
-        const txHash = await wallet.submitTx(signedTx);
-        console.log(txHash);
-        alert(txHash)
-
-      } catch(error){
-        console.log(error)
+    const carPurchase = localStorage.getItem('carPurchases');
+    
+    if (!carPurchase) {
+      alert('🚨 No hay nada en el carrito');
+      return;
+    }
+    
+    try {
+      const { price, amount } = JSON.parse(carPurchase);
+      
+      // Validar datos numéricos
+      if (isNaN(price) || isNaN(amount)) {
+        alert('Error: Datos inválidos en el carrito');
+        return;
       }
+  
+      // Calcular total en lovelace (1 ADA = 1,000,000 lovelace)
+      const priceNumber = parseFloat(price);
+      const amountNumber = parseInt(amount);
+      const totalLovelace = Math.round(priceNumber * amountNumber * 1000000);
+  
+      if (!wallet) {
+        alert('Wallet no conectada');
+        return;
+      }
+  
+      // Verificar balance suficiente
+      if (balance !== null && balance < totalLovelace / 1000000) {
+        alert('❌ Balance insuficiente');
+        return;
+      }
+  
+      const tx = new Transaction({ initiator: wallet }).sendLovelace(
+        'addr1q8hgvw69utaqwlz3zdwswa39rl428cqe47uv97jht89034slnpfxfa09mlp65fa6hnqk4pu4ar57vzrqtx6s84yhdpuqplk2a7',
+        totalLovelace.toString()
+      );
+  
+      const unsignedTx = await tx.build().catch(error => {
+        throw new Error(`Error construyendo transacción: ${error.message}`);
+      });
+  
+      // Paso 2: Firmar transacción
+      const signedTx = await wallet.signTx(unsignedTx).catch(error => {
+        if (error.message.includes('declined')) {
+          throw new Error('Has cancelado la firma de la transacción');
+        }
+        throw new Error(`Error firmando transacción: ${error.message}`);
+      });
+  
+      // Paso 3: Enviar transacción
+      const txHash = await wallet.submitTx(signedTx).catch(error => {
+        throw new Error(`Error enviando transacción: ${error.message}`);
+      });
+      
+      postFacture(txHash)
 
+      console.log('Transacción exitosa:', txHash);
+      alert(`✅ Transacción exitosa!\nHash: ${txHash}`);
+      
+
+
+      // Limpiar carrito después de transacción exitosa
+      localStorage.removeItem('carPurchases');
+      setAmount(1);
+  
+    } catch (error) {
+      console.error('Error en la transacción:', error);
+      alert(`❌ Error en la transacción: ${error instanceof Error ? error.message : 'Error desconocido'}`);
     }
   }
 
@@ -61,14 +122,8 @@ const Home: NextPage = () => {
   }, [connected, getBalance]); 
 
   
-  // Nuevo estado para las imágenes
-  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
-  const imagePaths = [
-    '/carone.png',
-    '/cartwo.png',
-    '/carthree.png'
-  ];
-
+  
+  
 
 
   // Handler para cambiar imagen (nuevo)
@@ -86,11 +141,11 @@ const Home: NextPage = () => {
 
 
   const carPrices : Record<string, string> =  {
-    'Toyota Corolla Cross Hybrid GR Sport': '0.10',
-    'Suzuki Grand Vitara': '0.11',
-    'Suzuki S-Presso': '0.12',
-    'Subaru WRX': '0.13',
-    'Chery Omoda 5': '0.14'
+    'Toyota Corolla Cross Hybrid GR Sport': '1',
+    'Suzuki Grand Vitara': '1.1',
+    'Suzuki S-Presso': '1.2',
+    'Subaru WRX': '1.3',
+    'Chery Omoda 5': '1.4'
 
   }
 
@@ -129,17 +184,13 @@ const Home: NextPage = () => {
   
     // Sobrescribe directamente con el nuevo registro
     localStorage.setItem('carPurchases', JSON.stringify(carData));
-    
+    alert('Datos guardados (sobrescritos):'+JSON.stringify(Object.values(carData),null,4));
     console.log('Datos guardados (sobrescritos):', carData);
   };
 
-
-
-
-
-
-
-  console.log(inputValue)
+  
+  
+  
 
   return (
     <div>
@@ -170,7 +221,9 @@ const Home: NextPage = () => {
 
               {/* Botón de transacción */}
               <button onClick={tx} disabled={loading} className="buybutton">
-                {inputValue}Buy
+                
+                Buy
+              
               </button>
             </>
           )}
@@ -222,7 +275,7 @@ const Home: NextPage = () => {
               
               <div>
                 <Image width={100} height={100} alt="icon" src="/smile.png" ></Image>
-                <p>Membeli mobil mudah, menyenangkan dan memuaskan</p>
+                <p>Buying a car is easy, fun and satisfying</p>
               </div>
             
             
@@ -264,7 +317,7 @@ const Home: NextPage = () => {
                 <Image width={1000} height={1000} alt="icon" src={currentCarImage} ></Image>
                 
                 <div>
-                  <h2>amount</h2>
+                  <h2>AMOUNT</h2>
                   
                   <div>
                     <p onClick={decrementAmount} >-</p>
@@ -288,13 +341,7 @@ const Home: NextPage = () => {
         </section>
         
         
-        <div>
-          <input 
-            type="number" 
-            value={inputValue}
-            onChange={handleChange} 
-          />
-        </div>
+      
 
 
 
