@@ -235,6 +235,11 @@ const Home: NextPage = () => {
       <div className="backgroundcontainer">
         <Image className="imagebackground" src="/backgroundmaindiv.png" alt="background" width={1000} height={700}></Image>
       </div>
+      {/*banner de fondo en position absolute y z-index: -1 */}
+      <div className="bannercontainer">
+        <Image className="bannerimage" src="/banner.png" alt="background" width={8000} height={1000}></Image>
+      </div>
+
 
       <main className="maincontainer">
         
@@ -406,7 +411,17 @@ const Home: NextPage = () => {
           
         </section>
         
+        <section>
+          <article>
 
+            <p>Buy your dream car now at BuyCar and enjoy an easy and enjoyable car buying experience! What are you waiting for?</p>
+            <button>Contact Us Now</button>
+
+
+          </article>
+          
+
+        </section>
 
 
       </main>
