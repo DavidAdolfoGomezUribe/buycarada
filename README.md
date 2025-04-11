@@ -50,39 +50,61 @@ Formato de entrega: URL del repositorio en GitHub.
 
     - [Mockapi](https://mockapi.io/): MockAPI es una plataforma en línea que permite a desarrolladores crear y simular APIs REST de manera rápida y sencilla, sin necesidad de configurar un backend real. Es especialmente útil para el desarrollo frontend, pruebas de integración y prototipado de aplicaciones.
 
-    - La implementaciion de las apis fue la siguiente, [CIP-30](https://cips.cardano.org/cip/CIP-30) y [Meshjs](https://meshjs.dev/) como base fundamental para el envio de transacciones a traves de la red de CARDANO,.
+    - La implementaciion de las apis fue la siguiente, [CIP-30](https://cips.cardano.org/cip/CIP-30) y [Meshjs](https://meshjs.dev/) como base fundamental para el envio de transacciones a traves de la red de CARDANO ademas de usar las herramientas y templates de las mimas. Para registrar las facturas en el backend se uso [Mockapi](https://mockapi.io/)
+  
+
 2. **Almacenamiento Local:**
-    - Guardar información relevante en Local Storage.
-    - Permitir la recuperación y visualización de los datos almacenados.
+    - La informacion relevante guardada fue el nombre, la cantidad y el valor del vehiculo ademas de un txHash (codigo unico de transaccion verificable en la blockchain de cardano).
+  
+    - Los datos son visibles en el promp al momento de guardar el vehiculo y la cantidad de vehiculos seleccionados.
+  
 3. **Interfaz Responsiva:**
-    - Diseñar una UI atractiva y funcional.
-    - Asegurar la adaptabilidad a diferentes tamaños de pantalla (desktop y móvil).
+    - La UI es amigable con el usuario y muy directa.
+    - La pagina es capaz de de adaptarse a cualquier tipo de pantalla basados en el ancho de la pagina misma como medida de referencia (display real para ancho de 1440px).
+
 4. **Funcionalidad Dinámica:**
-    - Implementar interacciones con JavaScript (eventos, manipulación del DOM, etc.).
-    - Garantizar una navegación intuitiva y fluida.
+    - Los botones fueron diseñados para la interaccion con el usuario permitiendole enlazar la billetera y realizar transacciones al momento de terminar su pedido, se debera tomar encuenta que solo se puede escoger un modelo de vehiculo por transacion.
+    - La pagina se desenvuelve perfectamente sin retrasos ni glitches en las animaciones.
+
 5. **Entrega:**
-    - Subir el código a un repositorio en GitHub.
-    - Documentar el proyecto en un README detallado con descripción, instrucciones de uso e información del API utilizado.
-    - Entregar la URL del repositorio para evaluación.
+    - Este mismo.
+
+## Requisitos generales
+
+**!importante**
+El uso de typescript fue imperativo debido a la domumentacion de [Meshjs](https://meshjs.dev/)
+
+Contar con una billetera (wallet) en la red de cardano, especificamente la billetera de [Eternl](https://eternl.io/landing/setup) para poder usar al 100% la funcionalidad para la cual la pagina fue diseñada
+
+Contar con saldo superior a 10 ADA para poder firmar transacciones correctamente.
+
+Cada billetera cuenta con una direccion unica de transferencia.
+
+[Como comprar ADA](https://www.youtube.com/watch?v=LA38VotZP4Q)
+
+[Como enviar ADA desde BINANCE a Cardano](https://www.youtube.com/watch?v=47Gb98RlXsM)
+
+## Uso de la pagina
+
+- Debe conectar la billetera y contar con saldo suficiente para poder realizar compras y transacciones en la parte superior derecha
+
+- El boton habilitado muestra el saldo dispononle y habilita el boton de compra 
+
+- En la seccion de modelos de carros puede seleccionar el  modelo con la cantidad que el usuario desee comprar el cual mostrara un promp indicando que su item fue guardao correctamente
+
+- Una vez terminado ese proceso se puede dar click al boton "buy" y firmar la transaccion. Si todo sale correctamente le retornara un prompt indicando el numero de txHash correspondientes y guardara en el backend toda la operacion
+
+- El proceso se reinicia y permite realizar una nueva transaccion
 
 
 
 
 
 
-### Requisitos
 
 
 
-
-
-
-
-
-
-
-
-
+## Next.js README.md
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
 
