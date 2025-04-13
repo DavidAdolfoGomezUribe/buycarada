@@ -1,5 +1,7 @@
 
-# Lineamientos
+# Lineamientos 
+
+- [Video explicativo](https://www.tiktok.com/@davidgomez071/video/7492639005469625655)
 
 ## Proyecto progresivo JavaScript
 
